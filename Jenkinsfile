@@ -6,6 +6,7 @@ pipeline {
             steps {
                 checkout scm
                 sh 'ls -la'
+                sh 'echo "Workspace: $WORKSPACE"'
             }
         }
 
@@ -20,8 +21,8 @@ pipeline {
                         echo "--- Plik: $plik ---"
 
                         if docker run --rm \
-                            -v "$PWD:/kod" \
-                            -w /kod \
+                            -v jenkins_home:/var/jenkins_home \
+                            -w "$WORKSPACE" \
                             python:3.11-slim \
                             python -m py_compile "$plik"
                         then
